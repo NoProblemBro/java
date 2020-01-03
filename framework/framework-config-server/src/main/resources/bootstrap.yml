@@ -1,0 +1,22 @@
+server: 
+   port: 8082
+spring:
+  application:
+    name: config-server
+  profiles: 
+    active: dev
+  cloud: 
+    config:
+      server: 
+        git: 
+          uri: https://github.com/NoProblemBro/java.git
+          searchPaths: conf/{application}
+eureka:
+  hostname: localhost
+  instance:
+    statusPageUrl: http://${eureka.hostname}:${server.port}/actuator/info
+    healthCheckUrl: http://${eureka.hostname}:${server.port}/actuator/health
+    homePageUrl: http://${eureka.hostname}:${server.port}/
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka/
