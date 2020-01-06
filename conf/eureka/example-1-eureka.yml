@@ -6,4 +6,4 @@ eureka:
     homePageUrl: http://${eureka.hostname}:${server.port}/
   client:
     serviceUrl:
-      defaultZone: http://localhost:8080/eureka/
+      defaultZone: http://localhost:8078/eureka/,http://localhost:8079/eureka/,http://localhost:8080/eureka/

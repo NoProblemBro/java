@@ -6,9 +6,4 @@ eureka:
     homePageUrl: http://${eureka.hostname}:${server.port}/
   client:
     serviceUrl:
-      defaultZone: http://localhost:8080/eureka/
-management: 
-  endpoints: 
-    web: 
-      exposure: 
-        include: 'info', 'health','hystrix.stream','refresh'
+      defaultZone: http://localhost:8078/eureka/,http://localhost:8079/eureka/,http://localhost:8080/eureka/
