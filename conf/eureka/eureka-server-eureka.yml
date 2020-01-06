@@ -1,0 +1,11 @@
+eureka:
+  hostname: localhost
+  instance:
+    statusPageUrl: http://${eureka.hostname}:${server.port}/actuator/info
+    healthCheckUrl: http://${eureka.hostname}:${server.port}/actuator/health
+    homePageUrl: http://${eureka.hostname}:${server.port}/
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://localhost:8078/eureka/,http://localhost:8079/eureka/,http://localhost:8080/eureka/
