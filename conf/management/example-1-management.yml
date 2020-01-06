@@ -2,4 +2,4 @@ management:
   endpoints: 
     web: 
       exposure: 
-        include: 'info', 'health','hystrix.stream','refresh'
+        include: info,health,hystrix.stream,refresh
