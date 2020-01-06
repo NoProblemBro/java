@@ -1,3 +1,5 @@
+server:
+  port: 8078
 eureka:
   dataCenter: Shanghai
   environment: dev
