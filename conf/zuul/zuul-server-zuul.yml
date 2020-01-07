@@ -1,0 +1,6 @@
+zuul:
+  ignoredServices: '*'
+  routes:
+    example1: 
+      path: /**
+      serviceId: exmaple-1

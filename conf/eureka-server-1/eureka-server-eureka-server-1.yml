@@ -1,12 +1,2 @@
 server:
   port: 8078
-#eureka:
-#  dataCenter: Shanghai
-#  environment: dev
-#  instance:
-#    hostname: localhost
-#  client:
-#    registerWithEureka: true
-#    fetchRegistry: true
-#    serviceUrl:
-#      defaultZone: http://localhost:8079/eureka/,http://localhost:8080/eureka/
