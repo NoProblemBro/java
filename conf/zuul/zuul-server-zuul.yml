@@ -1,5 +1,4 @@
 zuul:
-  ignoredServices: '*'
   routes:
     example1: 
       path: /example1/**
