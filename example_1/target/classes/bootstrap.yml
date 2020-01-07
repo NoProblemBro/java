@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: example-1
-  profiles: 
-    active: server,eureka,management
-  cloud: 
-    config: 
-      uri: http://localhost:8082/
-      label: master
