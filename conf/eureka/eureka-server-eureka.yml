@@ -1,5 +1,7 @@
 eureka:
   hostname: localhost
+  environment: dev
+  dataCenter: Shanghai
   instance:
     statusPageUrl: http://${eureka.hostname}:${server.port}/actuator/info
     healthCheckUrl: http://${eureka.hostname}:${server.port}/actuator/health
