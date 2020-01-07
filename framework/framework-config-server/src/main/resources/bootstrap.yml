@@ -3,14 +3,12 @@ server:
 spring:
   application:
     name: config-server
-  profiles: 
-    active: dev
   cloud: 
     config:
       server: 
         git: 
           uri: https://github.com/NoProblemBro/java.git
-          searchPaths: conf/{application}
+          searchPaths: conf/{profile}
 eureka:
   hostname: localhost
   instance:
@@ -19,4 +17,5 @@ eureka:
     homePageUrl: http://${eureka.hostname}:${server.port}/
   client:
     serviceUrl:
-      defaultZone: http://localhost:8080/eureka/
+      defaultZone: http://localhost:8078/eureka/,http://localhost:8079/eureka/,http://localhost:8080/eureka/
+debug: true

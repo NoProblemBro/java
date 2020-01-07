@@ -1,10 +1,9 @@
-server: 
-   port: 8081
 spring:
   application:
     name: zuul-server
   profiles: 
-    active: dev
+    active: server,eureka,management
   cloud: 
     config: 
       uri: http://localhost:8082/
+      label: master
