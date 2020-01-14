@@ -2,4 +2,4 @@ zuul:
   routes:
     example1: 
       path: /example1/**
-      serviceId: EXAMPLE-1
+      serviceId: example-1
