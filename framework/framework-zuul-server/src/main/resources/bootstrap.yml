@@ -2,8 +2,13 @@ spring:
   application:
     name: zuul-server
   profiles: 
-    active: server,eureka,management
+    active: server,eureka,management,zuul,blacklist
   cloud: 
     config: 
       uri: http://localhost:8082/
       label: master
+debug: true
+logging: 
+  level: 
+    root: debug
+    org: debug
