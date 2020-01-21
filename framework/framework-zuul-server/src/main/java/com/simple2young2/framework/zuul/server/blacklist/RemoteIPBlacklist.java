@@ -1,8 +1,8 @@
 package com.simple2young2.framework.zuul.server.blacklist;
 
-import java.io.IOException;
+import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.SERVICE_ID_KEY;
+
 import java.io.InputStream;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,13 +17,16 @@ import org.springframework.cloud.netflix.zuul.filters.route.RibbonCommand;
 import org.springframework.cloud.netflix.zuul.filters.route.RibbonCommandFactory;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.zuul.context.RequestContext;
+import com.netflix.zuul.exception.ZuulException;
 import com.simple2young2.framework.zuul.server.conf.BlacklistRemoteProperties;
 
 public class RemoteIPBlacklist implements IIPBlacklist {
@@ -52,7 +55,7 @@ public class RemoteIPBlacklist implements IIPBlacklist {
 	}
 
 	@Override
-	public Set<String> findBlacklist() {
+	public Set<String> findIpsInBlacklist() throws ZuulException {
 		RequestContext context = RequestContext.getCurrentContext();
 		RibbonCommandContext commandCtx = buildCommandContext(context);
 		RibbonCommand command = this.ribbonCommandFactory.create(commandCtx);
@@ -60,22 +63,28 @@ public class RemoteIPBlacklist implements IIPBlacklist {
 		try {
 			InputStream inputStream = response.getBody();
 			byte[] data = StreamUtils.copyToByteArray(inputStream);
-			return this.objectMapper.readValue(data, new TypeReference<Set<String>>() {});
-		} catch (IOException e) {
-			LOGGER.error("ip黑名单查询失败", e);
+			if(response.getStatusCode() == HttpStatus.OK) {
+				return this.objectMapper.readValue(data, new TypeReference<Set<String>>() {});
+			}else {
+				throw new ZuulException(String.format("IP黑名单查询失败,IP黑名单服务返回：%s",new String(data)), response.getStatusCode().value(), "access denied");
+			}
+		}catch (ZuulException e) {
+			throw e;
+		}catch (Exception e) {
+			throw new ZuulException(e, "IP黑名单查询异常", HttpStatus.INTERNAL_SERVER_ERROR.value(), "access denied");
 		}
-		return new HashSet<String>();
 	}
 	
 	private RibbonCommandContext buildCommandContext(RequestContext context) {
 		HttpServletRequest request = context.getRequest();
 		MultiValueMap<String, String> headers = this.helper.buildZuulRequestHeaders(request);
-		List<String> headerValue = headers.get(FilterConstants.X_FORWARDED_FOR_HEADER);
-		if(headerValue == null) {
-			headers.set(FilterConstants.X_FORWARDED_FOR_HEADER, request.getRemoteAddr());
-		}else {
-			headerValue.add(request.getRemoteAddr());
+		
+		// 增加源服务id头
+		String serviceId = (String) context.get(SERVICE_ID_KEY);
+		if(!StringUtils.isEmpty(serviceId)) {
+			headers.add(FilterConstants.SERVICE_ID_HEADER, serviceId);
 		}
+		
 		return new RibbonCommandContext(
 			this.properties.getServiceId(), 
 			HttpMethod.GET.name(), 

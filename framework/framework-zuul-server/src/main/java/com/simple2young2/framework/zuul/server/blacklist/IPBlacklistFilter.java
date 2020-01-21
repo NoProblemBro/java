@@ -26,10 +26,10 @@ public class IPBlacklistFilter extends ZuulFilter {
 
 	@Override
 	public Object run() throws ZuulException {
-		Set<String> ipsInBlacklist = blacklist.findBlacklist();
+		Set<String> ipsInBlacklist = blacklist.findIpsInBlacklist();
 		if(ipsInBlacklist.size() > 0) {
 			// TODO 这里需要打印详细的日志，如链路的UUID，access token 等等，需要保证能精确定位到什么时间——>什么操作——>那个用户——>请求IP——>请求头dump数据
-			throw new ZuulException(String.format("发现黑名单，拒绝访问，ip:%s",ipsInBlacklist), HttpStatus.FORBIDDEN.value(), "access denied");
+			throw new ZuulException(String.format("命中IP黑名单，拒绝访问，ip:%s",ipsInBlacklist), HttpStatus.FORBIDDEN.value(), "access denied");
 		}
 		return null;
 	}
@@ -41,7 +41,7 @@ public class IPBlacklistFilter extends ZuulFilter {
 
 	@Override
 	public int filterOrder() {
-		return FilterConstants.PRE_DECORATION_FILTER_ORDER - 1;
+		return FilterConstants.PRE_DECORATION_FILTER_ORDER + 1;
 	}
 
 	

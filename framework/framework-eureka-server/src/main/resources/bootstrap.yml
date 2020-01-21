@@ -2,7 +2,7 @@ spring:
   application:
     name: eureka-server
   profiles: 
-    active: eureka,management,eureka-server-3
+    active: eureka,management,eureka-server-2
   cloud: 
     config: 
       uri: http://localhost:8082/

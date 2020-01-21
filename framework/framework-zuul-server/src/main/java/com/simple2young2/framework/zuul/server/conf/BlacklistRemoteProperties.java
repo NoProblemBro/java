@@ -1,10 +1,13 @@
 package com.simple2young2.framework.zuul.server.conf;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 @ConfigurationProperties(prefix = "zuul.ip-blacklist.remote")
+@ConditionalOnProperty(prefix = "zuul.ip-blacklist",name="enabled",havingValue="true")
 public class BlacklistRemoteProperties {
 	
 	private String uri;

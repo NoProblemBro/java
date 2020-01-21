@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simple2young2.framework.zuul.server.blacklist.IPBlacklistFilter;
 import com.simple2young2.framework.zuul.server.blacklist.RemoteIPBlacklist;
 
+
 @EnableZuulProxy
 @Configuration
 public class ZuulConfiguration {

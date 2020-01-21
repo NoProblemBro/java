@@ -2,7 +2,7 @@ spring:
   application:
     name: example-1
   profiles: 
-    active: server,eureka,management
+    active: server,eureka,management,blacklist
   cloud: 
     config: 
       uri: http://localhost:8082/
