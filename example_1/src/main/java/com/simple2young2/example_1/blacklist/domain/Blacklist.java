@@ -1,7 +1,10 @@
 package com.simple2young2.example_1.blacklist.domain;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+
+import org.springframework.util.StringUtils;
 
 public class Blacklist {
 	
@@ -38,6 +41,10 @@ public class Blacklist {
 		if(ipsInBlacklist != null && !ipsInBlacklist.isEmpty()) {
 			// 理论上，如果在全局命中黑名单就不应该继续查询。当然这只是一个例子
 			return ipsInBlacklist;
+		}
+		// 没有源服务id的话，只在全局IP黑名单中检索
+		if(StringUtils.isEmpty(serviceId)) {
+			return new HashSet<String>();
 		}
 		return blacklistRepository.findInOtherBlacklist(ips,serviceId);
 		
