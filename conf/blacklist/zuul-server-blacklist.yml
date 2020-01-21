@@ -1,6 +1,6 @@
 zuul:
   ip-blacklist:
-    enabled: false
+    enabled: true
     remote:
       uri: /ipBlacklist
       service-id: example-1
