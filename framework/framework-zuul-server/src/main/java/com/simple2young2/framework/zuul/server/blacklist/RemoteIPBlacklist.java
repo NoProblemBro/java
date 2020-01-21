@@ -29,6 +29,9 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.simple2young2.framework.zuul.server.conf.BlacklistRemoteProperties;
 
+/**
+ * @author Leon.Zhong
+ */
 public class RemoteIPBlacklist implements IIPBlacklist {
 	
 	protected static final Logger LOGGER = LoggerFactory.getLogger(RemoteIPBlacklist.class);
@@ -66,12 +69,12 @@ public class RemoteIPBlacklist implements IIPBlacklist {
 			if(response.getStatusCode() == HttpStatus.OK) {
 				return this.objectMapper.readValue(data, new TypeReference<Set<String>>() {});
 			}else {
-				throw new ZuulException(String.format("IP黑名单查询失败,IP黑名单服务返回：%s",new String(data)), response.getStatusCode().value(), "access denied");
+				throw new ZuulException(String.format("IP黑名单查询失败,IP黑名单服务返回：%s",new String(data)), HttpStatus.FORBIDDEN.value(), "access denied");
 			}
 		}catch (ZuulException e) {
 			throw e;
 		}catch (Exception e) {
-			throw new ZuulException(e, "IP黑名单查询异常", HttpStatus.INTERNAL_SERVER_ERROR.value(), "access denied");
+			throw new ZuulException(e, "IP黑名单查询异常", HttpStatus.FORBIDDEN.value(), "access denied");
 		}
 	}
 	
